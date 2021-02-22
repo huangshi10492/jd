@@ -2,7 +2,7 @@ name: sync-jd_scripts
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "0 0 */1 * *"
   workflow_dispatch:
   watch:
     types: started
@@ -10,8 +10,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-18.04
-    if: ${{ github.event.repository.owner.id == github.event.sender.id && github.repository == 'huangshi10492/jd' }}
-
     steps:
       - name: Init Build Dependencies
         env:
@@ -35,17 +33,6 @@ jobs:
           directory: master
           github_token: ${{ secrets.PAT }}
           branch: master
-
-      - name: Clone Main
-        run: |
-          git clone -b main git@gitee.com:lxk0301/jd_scripts.git main
-      - name: Push Main
-        uses: ad-m/github-push-action@master
-        with:
-          directory: main
-          github_token: ${{ secrets.PAT }}
-          branch: main
-
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@main
         with:
